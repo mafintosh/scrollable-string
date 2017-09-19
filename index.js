@@ -18,7 +18,7 @@ function Box (string, opts) {
 }
 
 Box.prototype.scrollable = function () {
-  return !this.atTop() && !this.atBottom()
+  return !this.atTop() || !this.atBottom()
 }
 
 Box.prototype.atTop = function () {
