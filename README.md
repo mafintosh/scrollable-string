@@ -65,6 +65,10 @@ Move to bottom.
 
 Move to top.
 
+#### `str.resize(options)`
+
+Resize the view-port. Takes same options as the constructor.
+
 #### `str.toString()`
 
 Returns the string rendered by the view-port.

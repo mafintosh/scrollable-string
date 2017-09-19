@@ -9,6 +9,8 @@ function Box (string, opts) {
     string = ''
   }
   if (!opts) opts = {}
+  if (opts.height) opts.minHeight = opts.maxHeight = opts.height
+
   this.minHeight = opts.minHeight || 0
   this.maxHeight = opts.maxHeight || 32
   this.position = 0
@@ -34,7 +36,7 @@ Box.prototype.top = function () {
 }
 
 Box.prototype.bottom = function () {
-  this.position = this.maxHeight
+  this.position = Infinity
   return this._check()
 }
 
@@ -73,7 +75,7 @@ Box.prototype.set = function (string) {
 }
 
 Box.prototype.resize = function (opts) {
-  if (typeof opts === 'number') opts = {maxHeight: opts}
+  if (opts.height) opts.minHeight = opts.maxHeight = opts.height
   this.maxHeight = opts.maxHeight || this.maxHeight
   this.minHeight = opts.minHeight || this.minHeight
   return this._check()
