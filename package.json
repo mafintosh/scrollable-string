@@ -1,0 +1,26 @@
+{
+  "name": "scrollable-string",
+  "version": "0.0.0",
+  "description": "Generate a diff friendly string that is bounded by a configurable scroll box",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "ansi-diff-stream": "^1.2.0",
+    "neat-input": "^1.3.0",
+    "standard": "^10.0.3",
+    "tape": "^4.8.0"
+  },
+  "scripts": {
+    "test": "standard && tape test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mafintosh/scrollable-string.git"
+  },
+  "author": "Mathias Buus (@mafintosh)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mafintosh/scrollable-string/issues"
+  },
+  "homepage": "https://github.com/mafintosh/scrollable-string"
+}
