@@ -51,7 +51,7 @@ tape('minHeight', function (t) {
   var str = scrollable({minHeight: 5})
 
   str.set('foo\nbar\nbaz\n')
-  t.same(str.toString(), 'foo\nbar\nbaz\n\n')
+  t.same(str.toString(), 'foo\nbar\nbaz\n\n\n')
 
   str.set('foo\nbar\nbaz\n1\n2\n3\n4\n')
   t.same(str.toString(), 'foo\nbar\nbaz\n1\n2\n3\n4\n')

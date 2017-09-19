@@ -86,7 +86,7 @@ Box.prototype.render = function () {
   var needsNewline = this.position + this.maxHeight < this.lines.length
   var lines = this.lines.slice(this.position, this.position + this.maxHeight)
 
-  while (lines.length < this.minHeight) {
+  while (lines.length <= this.minHeight) {
     needsNewline = false
     lines.push('')
   }
