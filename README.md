@@ -6,6 +6,8 @@ Generate a diff friendly string that is bounded by a configurable scroll box.
 npm install scrollable-string
 ```
 
+[![Build Status](https://travis-ci.org/mafintosh/scrollable-string.svg?branch=master)](https://travis-ci.org/mafintosh/scrollable-string)
+
 Made for usage with [ansi-diff-stream](https://github.com/mafintosh/ansi-diff-stream) and friends
 
 ## Usage
