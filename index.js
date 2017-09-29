@@ -71,7 +71,7 @@ Box.prototype.set = function (string) {
   if (!/\n$/.test(string)) string += os.EOL
   this.string = string
   this.lines = string.split('\n')
-  this.position = 0
+  this._check()
 }
 
 Box.prototype.resize = function (opts) {
