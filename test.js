@@ -32,6 +32,7 @@ tape('set', function (t) {
   str.up()
   t.same(str.toString(), 'bar\n')
 
+  str.moveToTop()
   str.set('1\n2\n')
 
   t.same(str.toString(), '1\n')

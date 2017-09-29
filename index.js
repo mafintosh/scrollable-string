@@ -40,6 +40,14 @@ Box.prototype.bottom = function () {
   return this._check()
 }
 
+Box.prototype.moveToTop = function () {
+  this.move(-Infinity)
+}
+
+Box.prototype.moveToBottom = function () {
+  this.move(Infinity)
+}
+
 Box.prototype.move = function (inc) {
   this.position += inc
   return this._check()
