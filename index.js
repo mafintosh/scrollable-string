@@ -68,8 +68,9 @@ Box.prototype._check = function () {
     this.position = 0
     return false
   }
-  if (this.atBottom()) {
-    this.position = Math.max(0, this.lines.length - 1 - this.maxHeight)
+  var maxPosition = Math.max(0, this.lines.length - 1 - this.maxHeight)
+  if (this.position > maxPosition) {
+    this.position = maxPosition
     return false
   }
   return true
