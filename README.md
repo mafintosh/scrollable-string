@@ -100,6 +100,11 @@ Returns `true` if either the position or the height changed, `false` if not.
 
 Returns the string rendered by the view-port.
 
+#### `var percentage = str.pct()`
+
+Returns the current scroll position in percent (a number between `0` and
+`1`).
+
 #### `var bool = str.atBottom()`
 
 Check if the view-port is at the bottom.

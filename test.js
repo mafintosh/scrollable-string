@@ -239,3 +239,21 @@ tape('update event', function (t) {
   t.equal(updates, 8, 'resize: 0 -> 0')
   t.end()
 })
+
+tape('str.pct() - fully visible', function (t) {
+  var str = scrollable('foo\nbar\nbaz', {maxHeight: 4})
+  t.equal(str.pct(), 1)
+  t.end()
+})
+
+tape('str.pct() - not fully visible', function (t) {
+  var str = scrollable('1\n2\n3\n4\n5\n6', {maxHeight: 3})
+  t.equal(str.pct(), 0.5)
+  str.down()
+  t.equal(str.pct(), 4 / 6)
+  str.down()
+  t.equal(str.pct(), 5 / 6)
+  str.down()
+  t.equal(str.pct(), 1)
+  t.end()
+})

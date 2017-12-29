@@ -50,6 +50,12 @@ Box.prototype.atBottom = function () {
   return lines - this.position <= this.maxHeight
 }
 
+Box.prototype.pct = function () {
+  var bottomEdge = this.position + this.maxHeight
+  var lines = this.lines.length - 1
+  return Math.min(1, bottomEdge / lines)
+}
+
 Box.prototype.moveToTop =
 Box.prototype.top = function () {
   return this.setPosition(0)
