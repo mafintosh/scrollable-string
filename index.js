@@ -81,7 +81,7 @@ Box.prototype.down = function () {
 Box.prototype.set = function (string) {
   if (!/\n$/.test(string)) string += os.EOL
   this.string = string
-  this.lines = string.split('\n')
+  this.lines = string.split(os.EOL)
   var moved = this.setPosition(this.position)
   if (!moved) this.emit('update')
   return true
@@ -118,5 +118,5 @@ Box.prototype.render = function () {
     lines.push('')
   }
 
-  return lines.join('\n') + (needsNewline ? os.EOL : '')
+  return lines.join(os.EOL) + (needsNewline ? os.EOL : '')
 }
