@@ -1,9 +1,16 @@
+var inherits = require('util').inherits
 var os = require('os')
+var EventEmitter = require('events')
+
+inherits(Box, EventEmitter)
 
 module.exports = Box
 
 function Box (string, opts) {
   if (!(this instanceof Box)) return new Box(string, opts)
+
+  EventEmitter.call(this)
+
   if (typeof string !== 'string' && !opts) {
     opts = string
     string = ''
@@ -25,7 +32,9 @@ Box.prototype.setPosition = function (pos) {
   else if (pos > maxPosition) this.position = maxPosition
   else this.position = pos
 
-  return this.position !== oldPosition
+  var moved = this.position !== oldPosition
+  if (moved) this.emit('update')
+  return moved
 }
 
 Box.prototype.scrollable = function () {
@@ -67,7 +76,9 @@ Box.prototype.set = function (string) {
   if (!/\n$/.test(string)) string += os.EOL
   this.string = string
   this.lines = string.split('\n')
-  return this.setPosition(this.position)
+  var moved = this.setPosition(this.position)
+  if (!moved) this.emit('update')
+  return true
 }
 
 Box.prototype.height = function () {
@@ -85,7 +96,10 @@ Box.prototype.resize = function (opts) {
   this.maxHeight = opts.maxHeight || this.maxHeight
   this.minHeight = opts.minHeight || this.minHeight
   var moved = this.setPosition(this.position)
-  return moved ? true : oldHeight !== this.height()
+  if (moved) return true
+  var changed = oldHeight !== this.height()
+  if (changed) this.emit('update')
+  return changed
 }
 
 Box.prototype.toString =
