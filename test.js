@@ -1,23 +1,131 @@
 var tape = require('tape')
 var scrollable = require('./')
 
-tape('basic', function (t) {
+tape('box.toString()', function (t) {
   var str = scrollable('foo\nbar\nbaz\n', {maxHeight: 1})
-
-  t.same(str.toString(), 'foo\n')
-  t.ok(str.down())
-  t.same(str.toString(), 'bar\n')
-  t.ok(str.down())
-  t.same(str.toString(), 'baz\n')
-  t.notOk(str.down())
-  t.same(str.toString(), 'baz\n')
-  t.ok(str.up())
-  t.same(str.toString(), 'bar\n')
-
+  t.equal(str.toString(), 'foo\n')
   t.end()
 })
 
-tape('set', function (t) {
+tape('box.setPosition()', function (t) {
+  var str = scrollable('foo\nbar\nbaz\n', {maxHeight: 1})
+  t.equal(str.toString(), 'foo\n')
+  t.notOk(str.setPosition(0))
+  t.equal(str.toString(), 'foo\n')
+  t.ok(str.setPosition(1))
+  t.equal(str.toString(), 'bar\n')
+  t.ok(str.setPosition(42))
+  t.equal(str.toString(), 'baz\n')
+  t.notOk(str.setPosition(42))
+  t.end()
+})
+
+tape('box.move()', function (t) {
+  var str = scrollable('foo\nbar\nbaz\n', {maxHeight: 1})
+  t.equal(str.toString(), 'foo\n')
+  t.notOk(str.move(0))
+  t.equal(str.toString(), 'foo\n')
+  t.ok(str.move(1))
+  t.equal(str.toString(), 'bar\n')
+  t.ok(str.move(42))
+  t.equal(str.toString(), 'baz\n')
+  t.notOk(str.move(42))
+  t.ok(str.move(-2))
+  t.equal(str.toString(), 'foo\n')
+  t.end()
+})
+
+tape('box.atTop()', function (t) {
+  var str = scrollable('foo\nbar\nbaz\n', {maxHeight: 1})
+  t.ok(str.atTop())
+  str.move(1)
+  t.notOk(str.atTop())
+  t.end()
+})
+
+tape('box.atBottom()', function (t) {
+  var str = scrollable('foo\nbar\nbaz\n', {maxHeight: 1})
+  t.notOk(str.atBottom())
+  str.move(2)
+  t.ok(str.atBottom())
+  t.end()
+})
+
+tape('box.scrollable()', function (t) {
+  var s1 = scrollable('foo\nbar\nbaz\n', {maxHeight: 1})
+  t.ok(s1.scrollable())
+  var s2 = scrollable('foo\nbar\nbaz\n', {maxHeight: 3})
+  t.notOk(s2.scrollable())
+  var s3 = scrollable('foo\nbar\nbaz\n', {maxHeight: 4})
+  t.notOk(s3.scrollable())
+  t.end()
+})
+
+tape('box.top()', function (t) {
+  var str = scrollable('foo\nbar\nbaz\n', {maxHeight: 1})
+  str.move(1)
+  t.equal(str.toString(), 'bar\n')
+  t.ok(str.top())
+  t.equal(str.toString(), 'foo\n')
+  t.notOk(str.top())
+  t.end()
+})
+
+tape('box.bottom()', function (t) {
+  var str = scrollable('foo\nbar\nbaz\n', {maxHeight: 1})
+  t.equal(str.toString(), 'foo\n')
+  t.ok(str.bottom())
+  t.equal(str.toString(), 'baz\n')
+  t.notOk(str.bottom())
+  t.end()
+})
+
+tape('box.moveToTop()', function (t) {
+  var str = scrollable('foo\nbar\nbaz\n', {maxHeight: 1})
+  t.equal(str.toString(), 'foo\n')
+  t.notOk(str.moveToTop())
+  str.move(2)
+  t.equal(str.toString(), 'baz\n')
+  t.ok(str.moveToTop())
+  t.equal(str.toString(), 'foo\n')
+  t.end()
+})
+
+tape('box.moveToBottom()', function (t) {
+  var str = scrollable('foo\nbar\nbaz\n', {maxHeight: 1})
+  t.equal(str.toString(), 'foo\n')
+  t.ok(str.moveToBottom())
+  t.equal(str.toString(), 'baz\n')
+  t.notOk(str.moveToBottom())
+  t.end()
+})
+
+tape('box.up()', function (t) {
+  var str = scrollable('foo\nbar\nbaz\n', {maxHeight: 1})
+  t.equal(str.toString(), 'foo\n')
+  t.notOk(str.up())
+  str.move(2)
+  t.equal(str.toString(), 'baz\n')
+  t.ok(str.up())
+  t.equal(str.toString(), 'bar\n')
+  t.ok(str.up())
+  t.equal(str.toString(), 'foo\n')
+  t.notOk(str.up())
+  t.end()
+})
+
+tape('box.down()', function (t) {
+  var str = scrollable('foo\nbar\nbaz\n', {maxHeight: 1})
+  t.equal(str.toString(), 'foo\n')
+  t.ok(str.down())
+  t.equal(str.toString(), 'bar\n')
+  t.ok(str.down())
+  t.equal(str.toString(), 'baz\n')
+  t.notOk(str.down())
+  t.end()
+})
+
+tape('box.set()', function (t) {
   var str = scrollable({maxHeight: 1})
 
   str.set('foo\nbar\nbaz\n')
@@ -56,5 +164,42 @@ tape('minHeight', function (t) {
 
   str.set('foo\nbar\nbaz\n1\n2\n3\n4\n')
   t.same(str.toString(), 'foo\nbar\nbaz\n1\n2\n3\n4\n')
+  t.end()
+})
+
+tape('box.height()', function (t) {
+  var str
+  str = scrollable('foo\nbar\nbaz\n', {maxHeight: 1})
+  t.equal(str.height(), 1)
+  str = scrollable('foo\nbar\nbaz\n', {maxHeight: 100})
+  t.equal(str.height(), 3)
+  str = scrollable('foo\nbar\nbaz\n', {minHeight: 10})
+  t.equal(str.height(), 10)
+  str = scrollable('foo\nbar\nbaz\n', {minHeight: 10, maxHeight: 100})
+  t.equal(str.height(), 10)
+  str = scrollable('foo\nbar\nbaz\n', {height: 42})
+  t.equal(str.height(), 42)
+  t.end()
+})
+
+tape('box.resize()', function (t) {
+  var str = scrollable('foo\nbar\nbaz\n', {maxHeight: 1})
+  t.equal(str.toString(), 'foo\n')
+  t.notOk(str.resize({height: 1}))
+  t.equal(str.toString(), 'foo\n')
+  t.ok(str.resize({height: 2}))
+  t.equal(str.toString(), 'foo\nbar\n')
+  t.notOk(str.resize({height: 2}))
+  t.equal(str.toString(), 'foo\nbar\n')
+  t.ok(str.resize({height: 3}))
+  t.equal(str.toString(), 'foo\nbar\nbaz\n')
+  t.notOk(str.resize({height: 3}))
+  t.equal(str.toString(), 'foo\nbar\nbaz\n')
+  t.notOk(str.resize({maxHeight: 42}))
+  t.equal(str.toString(), 'foo\nbar\nbaz\n')
+  t.ok(str.resize({minHeight: 4}))
+  t.equal(str.toString(), 'foo\nbar\nbaz\n\n')
+  t.notOk(str.resize({minHeight: 4}))
+  t.equal(str.toString(), 'foo\nbar\nbaz\n\n')
   t.end()
 })

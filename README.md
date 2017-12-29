@@ -45,31 +45,53 @@ Create a new scrollable string. Options include:
 }
 ```
 
-#### `str.up()`
+#### `var moved = str.setPosition(pos)`
+
+Set absolute scroll position.
+
+Returns `true` if the position changed, `false` if not.
+
+#### `var moved = str.up()`
 
 Move the view-port up.
 
-#### `str.down()`
+Returns `true` if the position changed, `false` if not.
+
+#### `var moved = str.down()`
 
 Move the view-port down.
 
-#### `str.move(inc)`
+Returns `true` if the position changed, `false` if not.
+
+#### `var moved = str.move(inc)`
 
 Move the view-port up or down, i.e `str.move(-5)` to move 5 lines up.
 
-#### `str.bottom()`
+Returns `true` if the position changed, `false` if not.
+
+#### `var moved = str.bottom()`
 
 Move to bottom.
 
-#### `str.top()`
+Returns `true` if the position changed, `false` if not.
+
+#### `var moved = str.top()`
 
 Move to top.
 
-#### `str.resize(options)`
+Returns `true` if the position changed, `false` if not.
+
+#### `var rows = str.height()`
+
+Returns the height of the string in rows.
+
+#### `var changed = str.resize(options)`
 
 Resize the view-port. Takes same options as the constructor.
 
-#### `str.toString()`
+Returns `true` if either the position or the height changed, `false` if not.
+
+#### `var string = str.toString()`
 
 Returns the string rendered by the view-port.
 

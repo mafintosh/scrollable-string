@@ -17,6 +17,19 @@ function Box (string, opts) {
   this.set(string || opts.string || '')
 }
 
+Box.prototype.setPosition = function (pos) {
+  if (pos === this.position) return false
+
+  var oldPosition = this.position
+  var maxPosition = Math.max(0, this.lines.length - 1 - this.maxHeight)
+
+  if (pos < 0) this.position = 0
+  else if (pos > maxPosition) this.position = maxPosition
+  else this.position = pos
+
+  return this.position !== oldPosition
+}
+
 Box.prototype.scrollable = function () {
   return !this.atTop() || !this.atBottom()
 }
@@ -30,64 +43,51 @@ Box.prototype.atBottom = function () {
   return lines - this.position <= this.maxHeight
 }
 
+Box.prototype.moveToTop =
 Box.prototype.top = function () {
-  this.position = 0
-  return this._check()
+  return this.setPosition(0)
 }
 
+Box.prototype.moveToBottom =
 Box.prototype.bottom = function () {
-  this.position = Infinity
-  return this._check()
-}
-
-Box.prototype.moveToTop = function () {
-  this.move(-Infinity)
-}
-
-Box.prototype.moveToBottom = function () {
-  this.move(Infinity)
+  return this.setPosition(Infinity)
 }
 
 Box.prototype.move = function (inc) {
-  this.position += inc
-  return this._check()
+  return this.setPosition(this.position + inc)
 }
 
 Box.prototype.up = function () {
-  this.position--
-  return this._check()
+  return this.setPosition(this.position - 1)
 }
 
 Box.prototype.down = function () {
-  this.position++
-  return this._check()
-}
-
-Box.prototype._check = function () {
-  if (this.position < 0) {
-    this.position = 0
-    return false
-  }
-  var maxPosition = Math.max(0, this.lines.length - 1 - this.maxHeight)
-  if (this.position > maxPosition) {
-    this.position = maxPosition
-    return false
-  }
-  return true
+  return this.setPosition(this.position + 1)
 }
 
 Box.prototype.set = function (string) {
   if (!/\n$/.test(string)) string += os.EOL
   this.string = string
   this.lines = string.split('\n')
-  this._check()
+  return this.setPosition(this.position)
+}
+
+Box.prototype.height = function () {
+  var lines = this.lines.length - 1
+  var remainingLines = lines - this.position
+
+  if (remainingLines < this.minHeight) return this.minHeight
+  if (remainingLines > this.maxHeight) return this.maxHeight
+  return remainingLines
 }
 
 Box.prototype.resize = function (opts) {
+  var oldHeight = this.height()
   if (opts.height) opts.minHeight = opts.maxHeight = opts.height
   this.maxHeight = opts.maxHeight || this.maxHeight
   this.minHeight = opts.minHeight || this.minHeight
-  return this._check()
+  var moved = this.setPosition(this.position)
+  return moved ? true : oldHeight !== this.height()
 }
 
 Box.prototype.toString =
