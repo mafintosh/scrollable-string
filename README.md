@@ -45,6 +45,11 @@ Create a new scrollable string. Options include:
 }
 ```
 
+#### Event: `update`
+
+Emitted after either `str.up()` or `str.down()` have been sucessfully
+called.
+
 #### `var moved = str.setPosition(pos)`
 
 Set absolute scroll position.
