@@ -18,8 +18,6 @@ function Box (string, opts) {
 }
 
 Box.prototype.setPosition = function (pos) {
-  if (pos === this.position) return false
-
   var oldPosition = this.position
   var maxPosition = Math.max(0, this.lines.length - 1 - this.maxHeight)
 
